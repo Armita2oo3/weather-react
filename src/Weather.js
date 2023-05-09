@@ -61,6 +61,14 @@ export default function Weather(event) {
             <img src={list.icon} alt={list.description} />
           </li>
         </ul>
+        <a
+          href="https://github.com/Armita2oo3/weather-react"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open-Source Code
+        </a>
+        <p> By Armita Mir</p>
       </div>
     );
   } else {
@@ -68,7 +76,14 @@ export default function Weather(event) {
       <div>
         <h1>Weather App</h1>
         {form}
-        <a href=""></a>
+        <a
+          href="https://github.com/Armita2oo3/weather-react"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open-Source Code
+        </a>
+        <p> By Armita Mir</p>
       </div>
     );
   }
