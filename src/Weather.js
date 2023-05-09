@@ -4,13 +4,9 @@ import axios from "axios";
 import "./Weather.css";
 
 export default function Weather(event) {
-  const [city, setCity] = useState(null);
-  const [celcius, setCelcius] = useState(null);
-  const [description, setDescription] = useState(null);
-  const [humidity, setHumidity] = useState(null);
-  const [wind, setWind] = useState(null);
-  const [img, setImg] = useState(null);
-  const [list, setList] = useState(null);
+  const [city, setCity] = useState("");
+  const [list, setList] = useState("");
+  const [loaded, setLoaded] = useState(false);
   function changeCity(event) {
     event.preventDefault();
     setCity(event.target.value);
@@ -28,28 +24,17 @@ export default function Weather(event) {
   }
   function showWeather(response) {
     console.log(response.data);
-    setCelcius(`Temperature : ${Math.round(response.data.main.temp)} °C`);
-    setDescription(`Description : ${response.data.weather[0].description}`);
-    setHumidity(`Humidity : ${response.data.main.humidity}`);
-    setWind(`Wind Speed : ${Math.round(response.data.wind.speed)} m/s`);
-    const imgUrl = `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`;
-    setImg(<img src={imgUrl} alt="Weather Icon" />);
-    if (celcius) {
-      setList([
-        <li>{celcius}</li>,
-        <li>{description}</li>,
-        <li>{humidity}</li>,
-        <li>{wind}</li>,
-        <li>{img}</li>,
-      ]);
-    } else {
-      return <h3>Loading...</h3>;
-    }
+    setLoaded(true);
+    setList({
+      temperature: Math.round(response.data.main.temp),
+      humidity: response.data.main.humidity,
+      description: response.data.weather[0].description,
+      wind: Math.round(response.data.wind.speed),
+      icon: `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`,
+    });
   }
-  return (
+  let form = (
     <div>
-      <h1>Weather App</h1>
-
       <form onSubmit={showCity}>
         <input
           type="text"
@@ -60,8 +45,31 @@ export default function Weather(event) {
 
         <input type="submit" className="submit" />
       </form>
-
-      <ul>{list}</ul>
     </div>
   );
+  if (loaded) {
+    return (
+      <div>
+        <h1>Weather App</h1>
+        {form}
+        <ul>
+          <li>Temperature: {list.temperature}°C</li>
+          <li>Humidity: {list.humidity}%</li>
+          <li>Description: {list.description}</li>
+          <li>Wind Speed: {list.wind}</li>
+          <li>
+            <img src={list.icon} alt={list.description} />
+          </li>
+        </ul>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h1>Weather App</h1>
+        {form}
+        <a href=""></a>
+      </div>
+    );
+  }
 }
